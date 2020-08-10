@@ -36,7 +36,12 @@ namespace BookStore.API
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddCors(o =>
+            {
+                o.AddPolicy("MyPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod().AllowAnyHeader());
+            });
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo {
                     Title = "Book Store API", 
@@ -73,7 +78,7 @@ namespace BookStore.API
                 });
             app.UseHttpsRedirection();
             //app.UseStaticFiles(); No javascript or CSS used so don't need static files
-
+            app.UseCors("MyPolicy");
             app.UseRouting();
 
             app.UseAuthentication();
