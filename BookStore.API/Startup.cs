@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
 using System.IO;
+using BookStore.API.Contracts;
+using BookStore.API.Services;
 
 namespace BookStore.API
 {
@@ -45,6 +47,7 @@ namespace BookStore.API
                 var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
                 c.IncludeXmlComments(xmlpath);
             });
+            services.AddSingleton<ILoggerService, LoggerService>();
             services.AddControllers();
         }
 

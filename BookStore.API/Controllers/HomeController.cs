@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookStore.API.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +17,11 @@ namespace BookStore.API.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        private readonly ILoggerService logger;
+        public HomeController(ILoggerService logger)
+        {
+            this.logger = logger;
+        }
         /// <summary>
         /// Gets values
         /// </summary>
@@ -23,6 +30,7 @@ namespace BookStore.API.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
+            logger.LogInfo("Accessed Home Controler");
             return new string[] { "value1", "value2" };
         }
         /// <summary>
