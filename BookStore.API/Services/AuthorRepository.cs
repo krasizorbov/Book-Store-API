@@ -1,5 +1,6 @@
 ﻿using BookStore.API.Contracts;
 using BookStore.API.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,34 +15,40 @@ namespace BookStore.API.Services
         {
             this.db = db;
         }
-        public Task<bool> Create(Author entity)
+        public async Task<bool> Create(Author entity)
         {
-            throw new NotImplementedException();
+            await db.Authors.AddAsync(entity);
+            return await Save();
         }
 
-        public Task<bool> Delete(Author entity)
+        public async Task<bool> Delete(Author entity)
         {
-            throw new NotImplementedException();
+            db.Authors.Remove(entity);
+            return await Save();
         }
 
-        public Task<IList<Author>> FindAll()
+        public async Task<IList<Author>> FindAll()
         {
-            throw new NotImplementedException();
+            var authors = await db.Authors.ToListAsync();
+            return authors;
         }
 
-        public Task<Author> FindById(int id)
+        public async Task<Author> FindById(int id)
         {
-            throw new NotImplementedException();
+            var author = await db.Authors.FindAsync(id);
+            return author;
         }
 
-        public Task<bool> Save()
+        public async Task<bool> Save()
         {
-            throw new NotImplementedException();
+            var changes = await db.SaveChangesAsync();
+            return changes > 0;
         }
 
-        public Task<bool> Update(Author entity)
+        public async Task<bool> Update(Author entity)
         {
-            throw new NotImplementedException();
+            db.Authors.Update(entity);
+            return await Save();
         }
     }
 }
