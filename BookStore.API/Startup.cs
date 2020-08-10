@@ -12,6 +12,8 @@ using BookStore.API.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
+using System.IO;
 
 namespace BookStore.API
 {
@@ -32,7 +34,18 @@ namespace BookStore.API
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddRazorPages();
+
+            services.AddSwaggerGen(c => {
+                c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo {
+                    Title = "Book Store API", 
+                    Version = "V1",
+                    Description = "This is an educational API for a Book Store"
+                });
+                var xmlfile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
+                c.IncludeXmlComments(xmlpath);
+            });
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,8 +63,13 @@ namespace BookStore.API
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/V1/swagger.json", "Book Store API");
+                c.RoutePrefix = "";
+                });
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            //app.UseStaticFiles(); No javascript or CSS used so don't need static files
 
             app.UseRouting();
 
@@ -60,7 +78,7 @@ namespace BookStore.API
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }
