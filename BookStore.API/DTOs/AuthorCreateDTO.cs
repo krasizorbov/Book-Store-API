@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace BookStore.API.DTOs
 {
-    public class AuthorDTO
+    public class AuthorCreateDTO
     {
-        public int Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
         public string Bio { get; set; }
-        public virtual IList<BookDTO> Books { get; set; }
     }
 }

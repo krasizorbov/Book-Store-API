@@ -27,6 +27,11 @@ namespace BookStore.API.Services
             return await Save();
         }
 
+        public Task<bool> Exists(int id)
+        {
+            return db.Authors.AnyAsync(a => a.Id == id);
+        }
+
         public async Task<IList<Author>> FindAll()
         {
             var authors = await db.Authors.ToListAsync();

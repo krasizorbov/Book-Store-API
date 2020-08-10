@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookStore.API.DTOs
 {
-    public class AuthorDTO
+    public class AuthorUpdateDTO
     {
         public int Id { get; set; }
         [Required]
@@ -14,6 +14,5 @@ namespace BookStore.API.DTOs
         [Required]
         public string LastName { get; set; }
         public string Bio { get; set; }
-        public virtual IList<BookDTO> Books { get; set; }
     }
 }
