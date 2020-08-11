@@ -122,6 +122,47 @@ namespace BookStore.API.Controllers
                 return InternalError($"{location}: {e.Message} - {e.InnerException}");
             }
         }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO bookDTO)
+        {
+            var location = GetControllerActionNames();
+            try
+            {
+                logger.LogInfo($"{location}: Update Attemted on record with ID:{id}");
+                if (id < 1 || bookDTO == null || id != bookDTO.Id)
+                {
+                    logger.LogWarn($"{location}: Update failed with bad data with ID:{id}");
+                    return BadRequest();
+                }
+                var exists = await bookRepository.Exists(id);
+                if (!exists)
+                {
+                    logger.LogWarn($"{location}: Failed to retrieve record with ID:{id}");
+                    return NotFound();
+                }
+                if (!ModelState.IsValid)
+                {
+                    logger.LogWarn($"{location}: Data was incomplete");
+                    return BadRequest(ModelState);
+                }
+                var book = mapper.Map<Book>(bookDTO);
+                var isSuccess = await bookRepository.Update(book);
+                if (!isSuccess)
+                {
+                    return InternalError($"{location}: Update Failed");
+                }
+                logger.LogWarn($"{location}: Record with ID:{id} successfully updated");
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return InternalError($"{location}: {e.Message} - {e.InnerException}");
+            }
+        }
         private string GetControllerActionNames()
         {
             var controller = ControllerContext.ActionDescriptor.ControllerName;
