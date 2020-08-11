@@ -18,6 +18,9 @@ using BookStore.API.Contracts;
 using BookStore.API.Services;
 using AutoMapper;
 using BookStore.API.Mappings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BookStore.API
 {
@@ -36,16 +39,31 @@ namespace BookStore.API
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddDefaultIdentity<IdentityUser>().AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddCors(o =>
             {
                 o.AddPolicy("MyPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod().AllowAnyHeader());
+                builder => builder.AllowAnyOrigin()
+                .AllowAnyMethod().AllowAnyHeader());
             });
+
             services.AddAutoMapper(typeof(Maps));
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(o => 
+            { o.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidAudience = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:key"]))
+                }; 
+            });
+
             services.AddSwaggerGen(c => 
             {
                 c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo {
@@ -57,6 +75,7 @@ namespace BookStore.API
                 var xmlpath = Path.Combine(AppContext.BaseDirectory, xmlfile);
                 c.IncludeXmlComments(xmlpath);
             });
+
             services.AddSingleton<ILoggerService, LoggerService>();
             services.AddScoped<IAuthorRepository, AuthorRepository>();
             services.AddScoped<IBookRepository, BookRepository>();
