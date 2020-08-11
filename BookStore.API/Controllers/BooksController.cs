@@ -122,7 +122,12 @@ namespace BookStore.API.Controllers
                 return InternalError($"{location}: {e.Message} - {e.InnerException}");
             }
         }
-
+        /// <summary>
+        /// Updates a Book
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="bookDTO"></param>
+        /// <returns></returns>
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -155,7 +160,49 @@ namespace BookStore.API.Controllers
                 {
                     return InternalError($"{location}: Update Failed");
                 }
-                logger.LogWarn($"{location}: Record with ID:{id} successfully updated");
+                logger.LogInfo($"{location}: Record with ID:{id} successfully updated");
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                return InternalError($"{location}: {e.Message} - {e.InnerException}");
+            }
+        }
+
+        /// <summary>
+        /// Removes a Book by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var location = GetControllerActionNames();
+            try
+            {
+                logger.LogInfo($"{location}: Book with ID:{id} delete attempted");
+                if (id < 1)
+                {
+                    logger.LogWarn($"{location}: Book delete failed with bad data");
+                    return BadRequest();
+                }
+                var exists = await bookRepository.Exists(id);
+                if (!exists)
+                {
+                    logger.LogWarn($"{location}: Book with ID:{id} was not found");
+                    return NotFound();
+                }
+                var author = await bookRepository.FindById(id);
+                var isSuccess = await bookRepository.Delete(author);
+                if (!isSuccess)
+                {
+                    return InternalError($"{location}: Book delete failed");
+                }
+                logger.LogWarn($"{location}: Book with ID:{id} successfully deleted");
                 return NoContent();
             }
             catch (Exception e)
