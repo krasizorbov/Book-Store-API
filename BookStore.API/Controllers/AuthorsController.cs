@@ -34,7 +34,7 @@ namespace BookStore.API.Controllers
         /// </summary>
         /// <returns>List of Authors</returns>
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAuthors()
@@ -61,7 +61,7 @@ namespace BookStore.API.Controllers
         /// <param name="id"></param>
         /// <returns>An Authors record</returns>
         [HttpGet("{id}")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -136,7 +136,7 @@ namespace BookStore.API.Controllers
         /// <param name="authorDTO"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrator, Customer")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

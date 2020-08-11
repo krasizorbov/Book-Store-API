@@ -6,6 +6,7 @@ using AutoMapper;
 using BookStore.API.Contracts;
 using BookStore.API.Data;
 using BookStore.API.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,6 +34,7 @@ namespace BookStore.API.Controllers
         /// </summary>
         /// <returns>A List of Books</returns>
         [HttpGet]
+        [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBooks()
@@ -58,6 +60,7 @@ namespace BookStore.API.Controllers
         /// <param name="id"></param>
         /// <returns>A book record</returns>
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBook(int id)
@@ -88,6 +91,7 @@ namespace BookStore.API.Controllers
         /// <param name="bookDTO"></param>
         /// <returns>Book Object</returns>
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -129,6 +133,7 @@ namespace BookStore.API.Controllers
         /// <param name="bookDTO"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -175,6 +180,7 @@ namespace BookStore.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
