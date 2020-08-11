@@ -196,8 +196,8 @@ namespace BookStore.API.Controllers
                     logger.LogWarn($"{location}: Book with ID:{id} was not found");
                     return NotFound();
                 }
-                var author = await bookRepository.FindById(id);
-                var isSuccess = await bookRepository.Delete(author);
+                var book = await bookRepository.FindById(id);
+                var isSuccess = await bookRepository.Delete(book);
                 if (!isSuccess)
                 {
                     return InternalError($"{location}: Book delete failed");
