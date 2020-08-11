@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -36,24 +37,75 @@ namespace BookStore.UI.Service
             }
         }
 
-        public Task<bool> Delete(string url, int id)
+        public async Task<bool> Delete(string url, int id)
         {
-            throw new NotImplementedException();
+            if (id < 1)
+            {
+                return false;
+            }
+            var request = new HttpRequestMessage(HttpMethod.Delete, url + id);
+            var client = this.client.CreateClient();
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public Task<T> Get(string url, int id)
+        public async Task<T> Get(string url, int id)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get, url + id);
+            var client = this.client.CreateClient();
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<T>(content);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public Task<IList<T>> Get(string url)
+        public async Task<IList<T>> Get(string url)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            var client = this.client.CreateClient();
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<IList<T>>(content);
+            }
+            else
+            {
+                return null;
+            }
         }
 
-        public Task<bool> Update(string url, T obj)
+        public async Task<bool> Update(string url, T obj)
         {
-            throw new NotImplementedException();
+            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            if (obj == null)
+            {
+                return false;
+            }
+            request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
+            var client = this.client.CreateClient();
+            HttpResponseMessage response = await client.SendAsync(request);
+            if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
