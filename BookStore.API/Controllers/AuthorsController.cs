@@ -17,7 +17,6 @@ namespace BookStore.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorRepository authorRepository;
