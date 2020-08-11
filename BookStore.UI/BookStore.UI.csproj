@@ -4,11 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
-<<<<<<< HEAD
   <ItemGroup>
     <Folder Include="Service\" />
   </ItemGroup>
 
-=======
->>>>>>> bac28195c776b0a997af955d3b8ad64ac60adb31
 </Project>
