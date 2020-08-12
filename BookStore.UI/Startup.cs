@@ -14,6 +14,8 @@ using BookStore.UI.Contracts;
 using BookStore.UI.Services;
 using Blazored.LocalStorage;
 using System.IdentityModel.Tokens.Jwt;
+using BookStore.UI.Providers;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BookStore.UI
 {
@@ -34,6 +36,8 @@ namespace BookStore.UI
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
             services.AddHttpClient();
+            services.AddScoped<ApiAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());
             services.AddScoped<JwtSecurityTokenHandler>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
         }

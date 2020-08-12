@@ -1,12 +1,15 @@
 ﻿using Blazored.LocalStorage;
 using BookStore.UI.Contracts;
 using BookStore.UI.Models;
+using BookStore.UI.Providers;
 using BookStore.UI.Static;
+using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,10 +19,12 @@ namespace BookStore.UI.Services
     {
         private readonly IHttpClientFactory client;
         private readonly ILocalStorageService localStorage;
-        public AuthenticationRepository(IHttpClientFactory client, ILocalStorageService localStorage)
+        private readonly AuthenticationStateProvider authStateProvider;
+        public AuthenticationRepository(IHttpClientFactory client, ILocalStorageService localStorage, AuthenticationStateProvider authStateProvider)
         {
             this.client = client;
             this.localStorage = localStorage;
+            this.authStateProvider = authStateProvider;
         }
 
         public async Task<bool> Login(LoginModel user)
@@ -39,14 +44,15 @@ namespace BookStore.UI.Services
             await localStorage.SetItemAsync("authToken", token.Token);
 
             // Chane the state of the app
-
-
+            await ((ApiAuthenticationStateProvider)authStateProvider).LoggedIn();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", token.Token);
             return true;
         }
 
-        public Task Logout()
+        public async Task Logout()
         {
-            throw new NotImplementedException();
+            await localStorage.RemoveItemAsync("authToken");
+            ((ApiAuthenticationStateProvider)authStateProvider).LoggedOut();
         }
 
         public async Task<bool> Register(RegistrationModel user)
