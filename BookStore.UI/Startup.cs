@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BookStore.UI.Data;
+using BookStore.UI.Contracts;
+using BookStore.UI.Services;
 
 namespace BookStore.UI
 {
@@ -28,7 +30,8 @@ namespace BookStore.UI
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddHttpClient();
+            services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
