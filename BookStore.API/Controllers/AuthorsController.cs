@@ -17,6 +17,7 @@ namespace BookStore.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorRepository authorRepository;
