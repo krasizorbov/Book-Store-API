@@ -1,0 +1,40 @@
+﻿@page "/authors/edit/{Id}"
+@inject IAuthorRepository authorRepository
+@inject NavigationManager navManager
+
+<h3>Edit Author</h3>
+
+@if (Model == null)
+{
+   <LoadingMessage Message="Loding Author For Edit"/>
+}
+else
+{
+    <EditForm Model="Model" OnInvalidSubmit="EditAuthor">
+
+    </EditForm>
+}
+
+<button @onclick="BackToList" class="btn btn-outline-secondary">
+    <span class="oi oi-media-skip-backward"></span>Back to List
+</button>
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private Author Model = new Author();
+    protected override async Task OnInitializedAsync()
+    {
+        int id = int.Parse(Id);
+        Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
+    }
+
+    private void EditAuthor()
+    {
+
+    }
+
+    private void BackToList()
+    {
+        navManager.NavigateTo("/authors/");
+    }
+}
