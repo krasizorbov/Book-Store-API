@@ -33,7 +33,7 @@
         }
 
         /// <summary>
-        /// 
+        /// Register a new user
         /// </summary>
         /// <param name="userDTO"></param>
         /// <returns></returns>
