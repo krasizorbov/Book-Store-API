@@ -202,7 +202,7 @@
                 var exists = await authorRepository.Exists(id);
                 if (!exists)
                 {
-                    logger.LogWarn($"{location}: {GlobalConstants.TryDeleteAuthorById}");
+                    logger.LogWarn($"{location}: {GlobalConstants.DeleteAuthorByIdNotFound}");
                     return NotFound();
                 }
                 var author = await authorRepository.FindById(id);

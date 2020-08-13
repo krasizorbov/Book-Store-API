@@ -25,7 +25,7 @@ namespace BookStore.API.Common
         public const string AuthorUpdateSuccessfull = "Author With ID:{id} Successfully Updated";
         public const string TryDeleteAuthor = "Author With ID:{id} Delete Attempted";
         public const string DeleteAuthorBadData = "Author Delete Failed With Bad Data";
-        public const string TryDeleteAuthorById = "Author With ID:{id} Was Not Found";
+        public const string DeleteAuthorByIdNotFound = "Author With ID:{id} Was Not Found";
         public const string DeleteAuthorFailed = "Author Deletion Failed";
         public const string AuthorDeletionSuccessfull = "Author With ID:{id} Successfully Deleted";
 
