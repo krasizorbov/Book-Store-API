@@ -14,6 +14,7 @@
     using Microsoft.Extensions.Configuration;
     using System.Security.Claims;
     using System.IdentityModel.Tokens.Jwt;
+    using BookStore.API.Common;
 
     [Route("api/[controller]")]
     [ApiController]
@@ -46,7 +47,7 @@
             {
                 var username = userDTO.EmailAddress;
                 var password = userDTO.Password;
-                logger.LogInfo($"{location}: Registration attempt from user {username}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryUserRegistration}");
                 var user = new IdentityUser { Email = username, UserName = username };
                 var result = await userManager.CreateAsync(user, password);
                 if (!result.Succeeded)
@@ -55,8 +56,9 @@
                     {
                         logger.LogError($"{location}: {error.Code} {error.Description}");
                     }
-                    return InternalError($"{location}: {username} user registration attempt failed");
+                    return InternalError($"{location}: {GlobalConstants.UserRegistrationFailed}");
                 }
+                logger.LogInfo($"{location}: {GlobalConstants.UserRegistrationSuccess}");
                 return Ok(new { result.Succeeded });
             }
             catch (Exception e)
@@ -80,16 +82,16 @@
             {
                 var username = userDTO.EmailAddress;
                 var password = userDTO.Password;
-                logger.LogInfo($"{location}: Login attempt from user: {username}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryUserLogin}");
                 var result = await signInManager.PasswordSignInAsync(username, password, false, false);
                 if (result.Succeeded)
                 {
-                    logger.LogInfo($"{location}: {username} successfully authenticated");
+                    logger.LogInfo($"{location}: {GlobalConstants.UserLoginSuccess}");
                     var user = await userManager.FindByNameAsync(username);
                     var tokenString = await GenerateJsonWebToken(user);
                     return Ok(new { token = tokenString});
                 }
-                logger.LogInfo($"{location}: {username} not authenticated");
+                logger.LogInfo($"{location}: {GlobalConstants.UserLoginFailed}");
                 return Unauthorized(userDTO.EmailAddress);
             }
             catch (Exception e)
@@ -129,7 +131,7 @@
         private ObjectResult InternalError(string message)
         {
             logger.LogError(message);
-            return StatusCode(500, "Something went wrong, please contact the Admin");
+            return StatusCode(500, $"{GlobalConstants.Error500}");
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
+    using BookStore.API.Common;
     using BookStore.API.Contracts;
     using BookStore.API.Data;
     using BookStore.API.DTOs;
@@ -41,10 +42,10 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Attemted Call");
+                logger.LogInfo($"{location}: {GlobalConstants.TryGetBooks}");
                 var books = await bookRepository.FindAll();
                 var response = mapper.Map<IList<BookDTO>>(books);
-                logger.LogInfo($"{location}: Successfull");
+                logger.LogInfo($"{location}: {GlobalConstants.GetBooks}");
                 return Ok(response);
             }
             catch (Exception e)
@@ -67,15 +68,15 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Attemted Call for ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryGetBookById}");
                 var book = await bookRepository.FindById(id);
                 if (book == null)
                 {
-                    logger.LogWarn($"{location}: Failed to retrive record with ID:{id}");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookNotFound}");
                     return NotFound();
                 }
                 var response = mapper.Map<BookDTO>(book);
-                logger.LogInfo($"{location}: Successfully got record with ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.BookFoundById}");
                 return Ok(response);
             }
             catch (Exception e)
@@ -99,24 +100,24 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Create Attemted");
+                logger.LogInfo($"{location}: {GlobalConstants.TryCreateBook}");
                 if (bookDTO == null)
                 {
-                    logger.LogWarn($"{location}: Empty request was submitted");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookBadRequest}");
                     return BadRequest(ModelState);
                 }
                 if (!ModelState.IsValid)
                 {
-                    logger.LogWarn($"{location}: Data was incomplete");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookDataIncomplete}");
                     return BadRequest(ModelState);
                 }
                 var book = mapper.Map<Book>(bookDTO);
                 var isSuccess = await bookRepository.Create(book);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Creation Failed");
+                    return InternalError($"{location}: {GlobalConstants.BookCreationFailed}");
                 }
-                logger.LogInfo($"{location}: Creation was successfull");
+                logger.LogInfo($"{location}: {GlobalConstants.BookCreated}");
                 logger.LogInfo($"{location}: {book}");
                 return Created("Create", new { book });
             }
@@ -141,30 +142,30 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Update Attemted on record with ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryBookUpdate}");
                 if (id < 1 || bookDTO == null || id != bookDTO.Id)
                 {
-                    logger.LogWarn($"{location}: Update failed with bad data with ID:{id}");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookUpdateBadData}");
                     return BadRequest();
                 }
                 var exists = await bookRepository.Exists(id);
                 if (!exists)
                 {
-                    logger.LogWarn($"{location}: Failed to retrieve record with ID:{id}");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookUpdateNotFound}");
                     return NotFound();
                 }
                 if (!ModelState.IsValid)
                 {
-                    logger.LogWarn($"{location}: Data was incomplete");
+                    logger.LogWarn($"{location}: {GlobalConstants.BookInvalidModelState}");
                     return BadRequest(ModelState);
                 }
                 var book = mapper.Map<Book>(bookDTO);
                 var isSuccess = await bookRepository.Update(book);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Update Failed");
+                    return InternalError($"{location}: {GlobalConstants.BookUpdateFailed}");
                 }
-                logger.LogInfo($"{location}: Record with ID:{id} successfully updated");
+                logger.LogInfo($"{location}: {GlobalConstants.BookUpdateSuccessfull}");
                 return NoContent();
             }
             catch (Exception e)
@@ -189,25 +190,25 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Book with ID:{id} delete attempted");
+                logger.LogInfo($"{location}: {GlobalConstants.TryDeleteBook}");
                 if (id < 1)
                 {
-                    logger.LogWarn($"{location}: Book delete failed with bad data");
+                    logger.LogWarn($"{location}: {GlobalConstants.DeleteBookBadData}");
                     return BadRequest();
                 }
                 var exists = await bookRepository.Exists(id);
                 if (!exists)
                 {
-                    logger.LogWarn($"{location}: Book with ID:{id} was not found");
+                    logger.LogWarn($"{location}: {GlobalConstants.DeleteBookByIdNotFound}");
                     return NotFound();
                 }
                 var book = await bookRepository.FindById(id);
                 var isSuccess = await bookRepository.Delete(book);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Book delete failed");
+                    return InternalError($"{location}: {GlobalConstants.DeleteBookFailed}");
                 }
-                logger.LogWarn($"{location}: Book with ID:{id} successfully deleted");
+                logger.LogWarn($"{location}: {GlobalConstants.BookDeletionSuccessfull}");
                 return NoContent();
             }
             catch (Exception e)
@@ -224,7 +225,7 @@
         private ObjectResult InternalError(string message)
         {
             logger.LogError(message);
-            return StatusCode(500, "Something went wrong, please contact the Admin");
+            return StatusCode(500, $"{GlobalConstants.Error500}");
         }
     }
 }
