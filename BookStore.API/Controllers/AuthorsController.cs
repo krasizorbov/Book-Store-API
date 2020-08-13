@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using AutoMapper;
+    using BookStore.API.Common;
     using BookStore.API.Contracts;
     using BookStore.API.Data;
     using BookStore.API.DTOs;
@@ -29,7 +30,7 @@
             this.mapper = mapper;
         }
         /// <summary>
-        /// Get all Authors
+        /// Gets all Authors
         /// </summary>
         /// <returns>List of Authors</returns>
         [HttpGet]
@@ -41,10 +42,10 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Attempted Get All Authors");
+                logger.LogInfo($"{location}: {GlobalConstants.TryGetAuthors}");
                 var authors = await authorRepository.FindAll();
                 var response = mapper.Map<IList<AuthorDTO>>(authors);
-                logger.LogInfo($"{location}: Success got all Authors");
+                logger.LogInfo($"{location}: {GlobalConstants.GetAuthors}");
                 return Ok(response);
             }
             catch (Exception e)
@@ -55,7 +56,7 @@
         }
 
         /// <summary>
-        /// Get an Author by ID
+        /// Gets an Author by ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns>An Authors record</returns>
@@ -69,15 +70,15 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Attempted Get Author with an ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryGetAuthorById}");
                 var author = await authorRepository.FindById(id);
                 if (author == null)
                 {
-                    logger.LogWarn($"{location}: Author with ID:{id} not found");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorNotFound}");
                     return NotFound();
                 }
                 var response = mapper.Map<AuthorDTO>(author);
-                logger.LogInfo($"{location}: Success got Author with ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.AuthorFoundById}");
                 return Ok(response);
             }
             catch (Exception e)
@@ -101,24 +102,24 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Author submission attempted");
+                logger.LogInfo($"{location}: {GlobalConstants.TryCreateAuthor}");
                 if (authorDTO == null)
                 {
-                    logger.LogWarn($"{location}: Empty request was submitted");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorBadRequest}");
                     return BadRequest(ModelState);
                 }
                 if (!ModelState.IsValid)
                 {
-                    logger.LogWarn($"{location}: Author data was incomplete");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorDataIncomplete}");
                     return BadRequest(ModelState);
                 }
                 var author = mapper.Map<Author>(authorDTO);
                 var isSuccess = await authorRepository.Create(author);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Author creation failed");
+                    return InternalError($"{location}: {GlobalConstants.AuthorCreationFailed}");
                 }
-                logger.LogInfo($"{location}: Author created");
+                logger.LogInfo($"{location}: {GlobalConstants.AuthorCreated}");
                 logger.LogInfo($"{location}: {author}");
                 return Created("Create", new { author });
             }
@@ -144,30 +145,30 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Author update attempted - ID:{id}");
+                logger.LogInfo($"{location}: {GlobalConstants.TryAuthorUpdate}");
                 if (id < 1 || authorDTO == null || id != authorDTO.Id)
                 {
-                    logger.LogWarn($"{location}: Author update failed with bad data");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorUpdateBadData}");
                     return BadRequest();
                 }
                 var exists = await authorRepository.Exists(id);
                 if (!exists)
                 {
-                    logger.LogWarn($"{location}: Author with ID:{id} was not found");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorUpdateNotFound}");
                     return NotFound();
                 }
                 if (!ModelState.IsValid)
                 {
-                    logger.LogWarn($"{location}: Author data was incomplete");
+                    logger.LogWarn($"{location}: {GlobalConstants.AuthorInvalidModelState}");
                     return BadRequest(ModelState);
                 }
                 var author = mapper.Map<Author>(authorDTO);
                 var isSuccess = await authorRepository.Update(author);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Update operation failed");
+                    return InternalError($"{location}: {GlobalConstants.AuthorUpdateFailed}");
                 }
-                logger.LogWarn($"{location}: Author with ID:{id} successfully updated");
+                logger.LogWarn($"{location}: {GlobalConstants.AuthorUpdateSuccessfull}");
                 return NoContent();
             }
             catch (Exception e)
@@ -192,25 +193,25 @@
             var location = GetControllerActionNames();
             try
             {
-                logger.LogInfo($"{location}: Author with ID:{id} delete attempted");
+                logger.LogInfo($"{location}: {GlobalConstants.TryDeleteAuthor}");
                 if (id < 1)
                 {
-                    logger.LogWarn($"{location}: Author delete failed with bad data");
+                    logger.LogWarn($"{location}: {GlobalConstants.DeleteAuthorBadData}");
                     return BadRequest();
                 }
                 var exists = await authorRepository.Exists(id);
                 if (!exists)
                 {
-                    logger.LogWarn($"{location}: Author with ID:{id} was not found");
+                    logger.LogWarn($"{location}: {GlobalConstants.TryDeleteAuthorById}");
                     return NotFound();
                 }
                 var author = await authorRepository.FindById(id);
                 var isSuccess = await authorRepository.Delete(author);
                 if (!isSuccess)
                 {
-                    return InternalError($"{location}: Author delete failed");
+                    return InternalError($"{location}: {GlobalConstants.DeleteAuthorFailed}");
                 }
-                logger.LogWarn($"{location}: Author with ID:{id} successfully deleted");
+                logger.LogWarn($"{location}: {GlobalConstants.AuthorDeletionSuccessfull}");
                 return NoContent();
             }
             catch (Exception e)
@@ -228,7 +229,7 @@
         private ObjectResult InternalError(string message)
         {
             logger.LogError(message);
-            return StatusCode(500, "Something went wrong, please contact the Admin");
+            return StatusCode(500, $"{GlobalConstants.Error500}");
         }
     }
 }
