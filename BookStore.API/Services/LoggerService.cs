@@ -1,9 +1,5 @@
 ﻿using BookStore.API.Contracts;
 using NLog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BookStore.API.Services
 {

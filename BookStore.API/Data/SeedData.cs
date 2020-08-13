@@ -57,7 +57,7 @@ namespace BookStore.API.Data
         }
         private async static Task SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (! await roleManager.RoleExistsAsync("Administrator"))
+            if (!await roleManager.RoleExistsAsync("Administrator"))
             {
                 var role = new IdentityRole
                 {

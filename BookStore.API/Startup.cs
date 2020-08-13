@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using BookStore.API.Data;
 using Microsoft.Extensions.Configuration;
@@ -21,6 +16,7 @@ using BookStore.API.Mappings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace BookStore.API
 {
@@ -66,7 +62,7 @@ namespace BookStore.API
 
             services.AddSwaggerGen(c => 
             {
-                c.SwaggerDoc("V1", new Microsoft.OpenApi.Models.OpenApiInfo {
+                c.SwaggerDoc("V1", new OpenApiInfo {
                     Title = "Book Store API", 
                     Version = "V1",
                     Description = "This is an educational API for a Book Store"
