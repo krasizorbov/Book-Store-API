@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.API.Contracts
+﻿namespace BookStore.API.Contracts
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     public interface IRepositoryBase<T> where T : class
     {
         Task<IList<T>> FindAll();

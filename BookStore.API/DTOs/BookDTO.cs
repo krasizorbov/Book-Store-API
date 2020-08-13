@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.API.DTOs
+﻿namespace BookStore.API.DTOs
 {
     public class BookDTO
     {

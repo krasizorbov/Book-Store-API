@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using BookStore.API.Contracts;
-using BookStore.API.Data;
-using BookStore.API.DTOs;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace BookStore.API.Controllers
+﻿namespace BookStore.API.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using AutoMapper;
+    using BookStore.API.Contracts;
+    using BookStore.API.Data;
+    using BookStore.API.DTOs;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
     /// <summary>
     /// Interacts with the Books table
     /// </summary>

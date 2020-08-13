@@ -1,13 +1,11 @@
-﻿using BookStore.API.Contracts;
-using BookStore.API.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.API.Services
+﻿namespace BookStore.API.Services
 {
+    using BookStore.API.Contracts;
+    using BookStore.API.Data;
+    using Microsoft.EntityFrameworkCore;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public class AuthorRepository : IAuthorRepository
     {
         private readonly ApplicationDbContext db;

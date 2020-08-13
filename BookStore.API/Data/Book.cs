@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookStore.API.Data
+﻿namespace BookStore.API.Data
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Books")]
     public partial class Book
     {

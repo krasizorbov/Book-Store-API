@@ -1,8 +1,7 @@
-﻿using BookStore.API.Contracts;
-using NLog;
-
-namespace BookStore.API.Services
+﻿namespace BookStore.API.Services
 {
+    using BookStore.API.Contracts;
+    using NLog;
     public class LoggerService : ILoggerService
     {
         private static ILogger logger = LogManager.GetCurrentClassLogger();

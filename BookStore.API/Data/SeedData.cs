@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.API.Data
+﻿namespace BookStore.API.Data
 {
+    using Microsoft.AspNetCore.Identity;
+    using System.Threading.Tasks;
     public static class SeedData
     {
         public async static Task Seed(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)

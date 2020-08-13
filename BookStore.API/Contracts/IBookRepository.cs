@@ -1,11 +1,6 @@
-﻿using BookStore.API.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.API.Contracts
+﻿namespace BookStore.API.Contracts
 {
+    using BookStore.API.Data;
     public interface IBookRepository : IRepositoryBase<Book>
     {
     }

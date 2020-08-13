@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookStore.API.Data
+﻿namespace BookStore.API.Data
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Authors")]
     public partial class Author
     {
