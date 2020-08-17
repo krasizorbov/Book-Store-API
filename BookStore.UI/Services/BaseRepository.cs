@@ -24,7 +24,7 @@
             {
                 return false;
             }
-            request.Content = new StringContent(JsonConvert.SerializeObject(obj));
+            request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             var client = this.client.CreateClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
