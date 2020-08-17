@@ -36,7 +36,7 @@
     private bool response = true;
     private async Task HandleLogin()
     {
-        var response = await authorizationRepository.Login(Model);
+        response = await authorizationRepository.Login(Model);
 
         if (response)
         {

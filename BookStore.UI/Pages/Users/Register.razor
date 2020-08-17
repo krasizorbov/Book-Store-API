@@ -3,7 +3,7 @@
 @inject NavigationManager navManager
 <div class="card">
     <h3 class="card-title">Register Now</h3>
-    @if (isFailed)
+    @if (!response)
     {
         <div class="alert-danger">
             <p>Something went wrong with the registration attempt!</p>
@@ -37,18 +37,14 @@
 
 @code {
     private RegistrationModel Model = new RegistrationModel();
-    bool isFailed = false;
+    bool response = true;
     private async Task HandleRegistration()
     {
-        var response = await authorizationRepository.Register(Model);
+        response = await authorizationRepository.Register(Model);
 
         if (response)
         {
             navManager.NavigateTo("/login");
-        }
-        else
-        {
-            isFailed = true;
         }
     }
 }
