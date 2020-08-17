@@ -31,7 +31,7 @@
         }
 
         /// <summary>
-        /// Get all books
+        /// Gets all Books
         /// </summary>
         /// <returns>A List of Books</returns>
         [HttpGet]
@@ -55,7 +55,7 @@
         }
 
         /// <summary>
-        /// Gets a book by id
+        /// Gets a Book by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A book record</returns>
@@ -85,7 +85,7 @@
         }
 
         /// <summary>
-        /// Create a new Book
+        /// Creates a new Book
         /// </summary>
         /// <param name="bookCreateDTO"></param>
         /// <returns>Book Object</returns>
