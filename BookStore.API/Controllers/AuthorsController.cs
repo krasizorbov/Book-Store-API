@@ -89,20 +89,20 @@
         /// <summary>
         /// Creates an Author
         /// </summary>
-        /// <param name="authorDTO"></param>
+        /// <param name="authorCreateDTO"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] AuthorCreateDTO authorDTO)
+        public async Task<IActionResult> Create([FromBody] AuthorCreateDTO authorCreateDTO)
         {
             var location = GetControllerActionNames();
             try
             {
                 logger.LogInfo($"{location}: {GlobalConstants.TryCreateAuthor}");
-                if (authorDTO == null)
+                if (authorCreateDTO == null)
                 {
                     logger.LogWarn($"{location}: {GlobalConstants.AuthorBadRequest}");
                     return BadRequest(ModelState);
@@ -112,7 +112,7 @@
                     logger.LogWarn($"{location}: {GlobalConstants.AuthorDataIncomplete}");
                     return BadRequest(ModelState);
                 }
-                var author = mapper.Map<Author>(authorDTO);
+                var author = mapper.Map<Author>(authorCreateDTO);
                 var isSuccess = await authorRepository.Create(author);
                 if (!isSuccess)
                 {
@@ -132,20 +132,20 @@
         /// Updates an Author
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="authorDTO"></param>
+        /// <param name="authorUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, [FromBody] AuthorUpdateDTO authorDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] AuthorUpdateDTO authorUpdateDTO)
         {
             var location = GetControllerActionNames();
             try
             {
                 logger.LogInfo($"{location}: {GlobalConstants.TryAuthorUpdate}");
-                if (id < 1 || authorDTO == null || id != authorDTO.Id)
+                if (id < 1 || authorUpdateDTO == null || id != authorUpdateDTO.Id)
                 {
                     logger.LogWarn($"{location}: {GlobalConstants.AuthorUpdateBadData}");
                     return BadRequest();
@@ -161,7 +161,7 @@
                     logger.LogWarn($"{location}: {GlobalConstants.AuthorInvalidModelState}");
                     return BadRequest(ModelState);
                 }
-                var author = mapper.Map<Author>(authorDTO);
+                var author = mapper.Map<Author>(authorUpdateDTO);
                 var isSuccess = await authorRepository.Update(author);
                 if (!isSuccess)
                 {
