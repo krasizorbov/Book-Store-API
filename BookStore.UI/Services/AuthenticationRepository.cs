@@ -41,7 +41,7 @@
 
             // Chane the state of the app
             await ((ApiAuthenticationStateProvider)authStateProvider).LoggedIn();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", token.Token);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token.Token);
             return true;
         }
 
