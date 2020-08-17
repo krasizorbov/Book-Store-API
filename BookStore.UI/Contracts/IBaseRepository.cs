@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BookStore.UI.Contracts
+﻿namespace BookStore.UI.Contracts
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     public interface IBaseRepository<T> where T : class
     {
         Task<T> Get(string url, int id);

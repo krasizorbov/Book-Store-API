@@ -1,24 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using BookStore.UI.Data;
-using BookStore.UI.Contracts;
-using BookStore.UI.Services;
-using Blazored.LocalStorage;
-using System.IdentityModel.Tokens.Jwt;
-using BookStore.UI.Providers;
-using Microsoft.AspNetCore.Components.Authorization;
-
 namespace BookStore.UI
 {
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using BookStore.UI.Contracts;
+    using BookStore.UI.Services;
+    using Blazored.LocalStorage;
+    using System.IdentityModel.Tokens.Jwt;
+    using BookStore.UI.Providers;
+    using Microsoft.AspNetCore.Components.Authorization;
     public class Startup
     {
         public Startup(IConfiguration configuration)

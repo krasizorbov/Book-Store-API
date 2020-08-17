@@ -1,20 +1,16 @@
-﻿using Blazored.LocalStorage;
-using BookStore.UI.Contracts;
-using BookStore.UI.Models;
-using BookStore.UI.Providers;
-using BookStore.UI.Static;
-using Microsoft.AspNetCore.Components.Authorization;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BookStore.UI.Services
+﻿namespace BookStore.UI.Services
 {
+    using Blazored.LocalStorage;
+    using BookStore.UI.Contracts;
+    using BookStore.UI.Models;
+    using BookStore.UI.Providers;
+    using BookStore.UI.Static;
+    using Microsoft.AspNetCore.Components.Authorization;
+    using Newtonsoft.Json;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading.Tasks;
     public class AuthenticationRepository : IAuthenticationRepository
     {
         private readonly IHttpClientFactory client;

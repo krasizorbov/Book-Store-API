@@ -1,15 +1,13 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components.Authorization;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-namespace BookStore.UI.Providers
+﻿namespace BookStore.UI.Providers
 {
+    using Blazored.LocalStorage;
+    using Microsoft.AspNetCore.Components.Authorization;
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
     public class ApiAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService localStorage;
