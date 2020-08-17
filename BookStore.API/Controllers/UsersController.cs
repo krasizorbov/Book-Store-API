@@ -38,7 +38,6 @@
         /// <param name="userDTO"></param>
         /// <returns></returns>
         [Route("register")]
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserDTO userDTO)
         {
@@ -87,12 +86,12 @@
                 if (result.Succeeded)
                 {
                     logger.LogInfo($"{location}: {GlobalConstants.UserLoginSuccess}");
-                    var user = await userManager.FindByNameAsync(username);
+                    var user = await userManager.FindByEmailAsync(username);
                     var tokenString = await GenerateJsonWebToken(user);
                     return Ok(new { token = tokenString});
                 }
                 logger.LogInfo($"{location}: {GlobalConstants.UserLoginFailed}");
-                return Unauthorized(userDTO.EmailAddress);
+                return Unauthorized(userDTO);
             }
             catch (Exception e)
             {
