@@ -58,7 +58,7 @@
         /// Gets a Book by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>A book record</returns>
+        /// <returns>A Book Record</returns>
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
