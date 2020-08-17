@@ -16,6 +16,7 @@
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     
     public class BooksController : ControllerBase
     {
@@ -34,7 +35,6 @@
         /// </summary>
         /// <returns>A List of Books</returns>
         [HttpGet]
-        [Authorize(Roles = "Administrator, Customer")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBooks()
@@ -59,8 +59,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns>A book record</returns>
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Administrator, Customer")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBook(int id)
@@ -88,20 +87,20 @@
         /// <summary>
         /// Create a new Book
         /// </summary>
-        /// <param name="bookDTO"></param>
+        /// <param name="bookCreateDTO"></param>
         /// <returns>Book Object</returns>
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] BookCreateDTO bookDTO)
+        public async Task<IActionResult> Create([FromBody] BookCreateDTO bookCreateDTO)
         {
             var location = GetControllerActionNames();
             try
             {
                 logger.LogInfo($"{location}: {GlobalConstants.TryCreateBook}");
-                if (bookDTO == null)
+                if (bookCreateDTO == null)
                 {
                     logger.LogWarn($"{location}: {GlobalConstants.BookBadRequest}");
                     return BadRequest(ModelState);
@@ -111,7 +110,7 @@
                     logger.LogWarn($"{location}: {GlobalConstants.BookDataIncomplete}");
                     return BadRequest(ModelState);
                 }
-                var book = mapper.Map<Book>(bookDTO);
+                var book = mapper.Map<Book>(bookCreateDTO);
                 var isSuccess = await bookRepository.Create(book);
                 if (!isSuccess)
                 {
@@ -127,23 +126,24 @@
             }
         }
         /// <summary>
-        /// Updates a Book
+        /// Updates a Book by id
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="bookDTO"></param>
+        /// <param name="bookUpdateDTO"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO bookDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO bookUpdateDTO)
         {
             var location = GetControllerActionNames();
             try
             {
                 logger.LogInfo($"{location}: {GlobalConstants.TryBookUpdate}");
-                if (id < 1 || bookDTO == null || id != bookDTO.Id)
+                if (id < 1 || bookUpdateDTO == null || id != bookUpdateDTO.Id)
                 {
                     logger.LogWarn($"{location}: {GlobalConstants.BookUpdateBadData}");
                     return BadRequest();
@@ -159,7 +159,7 @@
                     logger.LogWarn($"{location}: {GlobalConstants.BookInvalidModelState}");
                     return BadRequest(ModelState);
                 }
-                var book = mapper.Map<Book>(bookDTO);
+                var book = mapper.Map<Book>(bookUpdateDTO);
                 var isSuccess = await bookRepository.Update(book);
                 if (!isSuccess)
                 {
