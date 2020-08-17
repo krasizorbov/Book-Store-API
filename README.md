@@ -9,6 +9,7 @@ NET Core 3.1 Book Store Web API for educational purposes.
     C# and .Net Core Web Syntax
     Authentication using JWT (JSON Web Tokens)
     Use of Models, DTOs and AutoMapper
+	PoastMan and Swagger used for testing WEB API
     Build a Blazor Web Application to interact with Web API
   
 
