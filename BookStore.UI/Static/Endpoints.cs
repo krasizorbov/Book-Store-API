@@ -1,6 +1,6 @@
 ﻿namespace BookStore.UI.Static
 {
-    public class Endpoints
+    public static class Endpoints
     {
         public static string BaseUrl = "https://localhost:44358/";
         public static string AuthorsEndpoint = $"{BaseUrl}api/authors/";
