@@ -20,6 +20,7 @@
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private const int tokenExpirationDays = 1;
         private readonly SignInManager<IdentityUser> signInManager;
         private readonly UserManager<IdentityUser> userManager;
         private readonly ILoggerService logger;
@@ -116,7 +117,7 @@
                 config["Jwt:Issuer"], 
                 config["Jwt:Issuer"], 
                 claims, null, 
-                expires: DateTime.UtcNow.AddDays(30),
+                expires: DateTime.UtcNow.AddDays(tokenExpirationDays),
                 signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

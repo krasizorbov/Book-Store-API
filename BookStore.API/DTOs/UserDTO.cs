@@ -3,6 +3,8 @@
     using System.ComponentModel.DataAnnotations;
     public class UserDTO
     {
+        private const string passwordError = "";
+
         [Required]
         [EmailAddress]
         public string EmailAddress { get; set; }
