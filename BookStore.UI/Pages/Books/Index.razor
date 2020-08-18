@@ -50,7 +50,7 @@ else
                         <td>@book.Isbn</td>
                         <td>@string.Format("{0:C}", book.Price)</td>
                         <td>
-                            @if (@book.Author == null)
+                            @if (book.Author == null)
                             {
                                 <span class="text-muted">No Author Recorded</span>
                             }
