@@ -26,7 +26,7 @@
             }
             request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.Created)
             {
@@ -46,7 +46,7 @@
             }
             var request = new HttpRequestMessage(HttpMethod.Delete, url + id);
             var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
@@ -62,7 +62,7 @@
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url + id);
             var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -79,7 +79,7 @@
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
@@ -101,7 +101,7 @@
             }
             request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("beare", await GetBearerToken());
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
             HttpResponseMessage response = await client.SendAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
