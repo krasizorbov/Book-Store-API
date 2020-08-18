@@ -38,20 +38,22 @@
     </button>
 </EditForm>
 
-@code{ private Author Model = new Author();
-            private bool isSuccess = true;
+@code{ 
+    private Author Model = new Author();
+    private bool isSuccess = true;
 
-            private async Task CreateAuthor()
-            {
-                isSuccess = await authorRepository.Create(Endpoints.AuthorsEndpoint, Model);
-                if (isSuccess)
-                {
-                   
-                    BackToList();
-                }
-            }
+    private async Task CreateAuthor()
+    {
+        isSuccess = await authorRepository.Create(Endpoints.AuthorsEndpoint, Model);
+        if (isSuccess)
+        {
+           
+            BackToList();
+        }
+    }
 
-            private void BackToList()
-            {
-                navManager.NavigateTo("/authors/");
-            } }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/authors/");
+    } 
+}
