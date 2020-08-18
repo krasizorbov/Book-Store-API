@@ -11,6 +11,7 @@ namespace BookStore.UI
     using System.IdentityModel.Tokens.Jwt;
     using BookStore.UI.Providers;
     using Microsoft.AspNetCore.Components.Authorization;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,6 +34,7 @@ namespace BookStore.UI
             services.AddScoped<JwtSecurityTokenHandler>();
             services.AddTransient<IAuthenticationRepository, AuthenticationRepository>();
             services.AddTransient<IAuthorRepository, AuthorRepository>();
+            services.AddTransient<IBookRepository, BookRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
