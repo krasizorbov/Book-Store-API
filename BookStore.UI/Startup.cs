@@ -11,6 +11,7 @@ namespace BookStore.UI
     using System.IdentityModel.Tokens.Jwt;
     using BookStore.UI.Providers;
     using Microsoft.AspNetCore.Components.Authorization;
+    using Blazored.Toast;
 
     public class Startup
     {
@@ -28,6 +29,7 @@ namespace BookStore.UI
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddBlazoredLocalStorage();
+            services.AddBlazoredToast();
             services.AddHttpClient();
             services.AddScoped<ApiAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(p => p.GetRequiredService<ApiAuthenticationStateProvider>());

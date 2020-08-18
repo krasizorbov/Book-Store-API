@@ -3,7 +3,7 @@
 
 @inject IAuthorRepository authorRepository
 @inject NavigationManager navManager
-
+@inject IToastService toastService
 
 <h3 class="card-title">Create New Author</h3>
 <hr />
@@ -48,7 +48,7 @@
         isSuccess = await authorRepository.Create(Endpoints.AuthorsEndpoint, Model);
         if (isSuccess)
         {
-           
+            toastService.ShowSuccess("Author Created Successfully!");
             BackToList();
         }
     }
@@ -56,5 +56,5 @@
     private void BackToList()
     {
         navManager.NavigateTo("/authors/");
-    } 
+    }
 }
