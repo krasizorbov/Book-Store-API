@@ -2,7 +2,13 @@
 @inject IAuthorRepository authorRepository
 @inject NavigationManager navManager
 
-<h3>View</h3>
+<h3>View Author Details</h3>
+<hr />
+<br />
+@if (int.Parse(Id) < 1 || string.IsNullOrWhiteSpace(Id))
+{
+    <ErrorMessage Message="Invalid Selection. Please Try Again" />
+}
 @if (Model == null)
 {
     <LoadingMessage Message="Loding Authors..." />
@@ -49,8 +55,18 @@ else
     </div>
 
 }
+<br />
+<button @onclick="GoToEdit" class="btn btn-outline-warning">
+    <span class="oi oi-pencil"></span>
+    Edit Author
+</button>
+<button @onclick="GoToDelete" class="btn btn-outline-danger">
+    <span class="oi oi-circle-x"></span>
+    Delete Author
+</button>
 <button @onclick="BackToList" class="btn btn-outline-secondary">
-    <span class="oi oi-media-skip-backward"></span>Back to List
+    <span class="oi oi-media-skip-backward"></span>
+    Back To List
 </button>
 
 @code {
@@ -65,5 +81,14 @@ else
     private void BackToList()
     {
         navManager.NavigateTo("/authors/");
+    }
+    private void GoToEdit()
+    {
+        navManager.NavigateTo($"/authors/edit/{Model.Id}");
+    }
+
+    private void GoToDelete()
+    {
+        navManager.NavigateTo($"/authors/delete/{Model.Id}");
     }
 }
