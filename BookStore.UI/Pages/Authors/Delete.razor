@@ -1,7 +1,7 @@
 ﻿@page "/authors/delete/{Id}"
 @attribute [Authorize(Roles = "Administrator")]
 @inject IAuthorRepository authorRepository
-@inject NavigationManager _navManager
+@inject NavigationManager navManager
 
 <h3 class="card-title">Are You Sure You Want to Delete This Record?</h3>
 <hr />
@@ -93,6 +93,6 @@ else
 
         private void BackToList()
         {
-            _navManager.NavigateTo("/authors/");
+            navManager.NavigateTo("/authors/");
         } 
       }
