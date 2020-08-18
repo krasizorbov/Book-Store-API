@@ -60,7 +60,7 @@ else
 
     private async Task EditAuthor()
     {
-        isSuccess = await authorRepository.Update(Endpoints.AuthorsEndpoint, Model);
+        isSuccess = await authorRepository.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
         if (isSuccess)
         {
             //_toastService.ShowWarning("Author Updated Successfully", "");

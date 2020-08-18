@@ -92,9 +92,9 @@
             }
         }
 
-        public async Task<bool> Update(string url, T obj) // add int id to base
+        public async Task<bool> Update(string url, T obj, int id)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
+            var request = new HttpRequestMessage(HttpMethod.Put, url + id);
             if (obj == null)
             {
                 return false;
