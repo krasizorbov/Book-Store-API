@@ -3,6 +3,7 @@
     using Blazored.LocalStorage;
     using BookStore.UI.Contracts;
     using Newtonsoft.Json;
+    using System;
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -22,7 +23,7 @@
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             if (obj == null)
             {
-                return false;
+                return false; // Check this if true
             }
             request.Content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
             var client = this.client.CreateClient();
@@ -77,19 +78,27 @@
 
         public async Task<IList<T>> Get(string url)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            var client = this.client.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
-            HttpResponseMessage response = await client.SendAsync(request);
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<IList<T>>(content);
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                var client = this.client.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", await GetBearerToken());
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<IList<T>>(content);
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception)
             {
                 return null;
             }
+            
         }
 
         public async Task<bool> Update(string url, T obj, int id)

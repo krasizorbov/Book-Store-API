@@ -71,28 +71,29 @@ else
 </button>
 
 
-@code { [Parameter]
-        public string Id { get; set; }
+@code { 
+    [Parameter]
+    public string Id { get; set; }
 
-        private Author Model = new Author();
-        private bool isSuccess = true;
-        protected override async Task OnInitializedAsync()
+    private Author Model = new Author();
+    private bool isSuccess = true;
+    protected override async Task OnInitializedAsync()
+    {
+        int id = Convert.ToInt32(Id);
+        Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
+    }
+
+    private async Task DeleteAuthor()
+    {
+        isSuccess = await authorRepository.Delete(Endpoints.AuthorsEndpoint, Model.Id);
+        if (isSuccess)
         {
-            int id = Convert.ToInt32(Id);
-            Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
+            BackToList();
         }
+    }
 
-        private async Task DeleteAuthor()
-        {
-            isSuccess = await authorRepository.Delete(Endpoints.AuthorsEndpoint, Model.Id);
-            if (isSuccess)
-            {
-                BackToList();
-            }
-        }
-
-        private void BackToList()
-        {
-            navManager.NavigateTo("/authors/");
-        } 
-      }
+    private void BackToList()
+    {
+        navManager.NavigateTo("/authors/");
+    } 
+}

@@ -63,7 +63,6 @@ else
         isSuccess = await authorRepository.Update(Endpoints.AuthorsEndpoint, Model, Model.Id);
         if (isSuccess)
         {
-            //_toastService.ShowWarning("Author Updated Successfully", "");
             BackToList();
         }
     }
