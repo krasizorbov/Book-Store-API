@@ -6,9 +6,7 @@
     <h3 class="card-title">Login</h3>
     @if (!response)
     {
-        <div class="alert-danger">
-            <p>Something went wrong with the login attempt!</p>
-        </div>
+        <ErrorMessage Message="Something went wrong with the login attempt" />
     }
     <div class="card-body">
         <EditForm Model="Model" OnValidSubmit="HandleLogin">
