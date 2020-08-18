@@ -32,13 +32,13 @@
 
         public async Task<IList<Author>> FindAll()
         {
-            var authors = await db.Authors.ToListAsync();
+            var authors = await db.Authors.Include(b => b.Books).ToListAsync();
             return authors;
         }
 
         public async Task<Author> FindById(int id)
         {
-            var author = await db.Authors.FindAsync(id);
+            var author = await db.Authors.Include(b => b.Books).FirstOrDefaultAsync(b => b.Id == id);
             return author;
         }
 

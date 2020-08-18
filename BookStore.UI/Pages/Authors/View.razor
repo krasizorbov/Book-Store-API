@@ -56,39 +56,41 @@ else
 
 }
 <br />
-<button @onclick="GoToEdit" class="btn btn-outline-warning">
-    <span class="oi oi-pencil"></span>
-    Edit Author
-</button>
-<button @onclick="GoToDelete" class="btn btn-outline-danger">
-    <span class="oi oi-circle-x"></span>
-    Delete Author
-</button>
-<button @onclick="BackToList" class="btn btn-outline-secondary">
-    <span class="oi oi-media-skip-backward"></span>
-    Back To List
-</button>
+<AuthorizeView Roles="Administrator">
+    <button @onclick="GoToEdit" class="btn btn-outline-warning">
+        <span class="oi oi-pencil"></span>
+        Edit Author
+    </button>
+    <button @onclick="GoToDelete" class="btn btn-outline-danger">
+        <span class="oi oi-circle-x"></span>
+        Delete Author
+    </button>
+</AuthorizeView>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
 
-@code {
-    [Parameter]
-    public string Id { get; set; }
-    private Author Model = new Author();
-    protected override async Task OnInitializedAsync()
-    {
-        int id = int.Parse(Id);
-        Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
-    }
-    private void BackToList()
-    {
-        navManager.NavigateTo("/authors/");
-    }
-    private void GoToEdit()
-    {
-        navManager.NavigateTo($"/authors/edit/{Model.Id}");
-    }
+    @code {
+        [Parameter]
+        public string Id { get; set; }
+        private Author Model = new Author();
+        protected override async Task OnInitializedAsync()
+        {
+            int id = int.Parse(Id);
+            Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
+        }
+        private void BackToList()
+        {
+            navManager.NavigateTo("/authors/");
+        }
+        private void GoToEdit()
+        {
+            navManager.NavigateTo($"/authors/edit/{Model.Id}");
+        }
 
-    private void GoToDelete()
-    {
-        navManager.NavigateTo($"/authors/delete/{Model.Id}");
+        private void GoToDelete()
+        {
+            navManager.NavigateTo($"/authors/delete/{Model.Id}");
+        }
     }
-}
