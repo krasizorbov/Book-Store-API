@@ -1,36 +1,71 @@
 ﻿@page "/authors/edit/{Id}"
+@attribute [Authorize(Roles = "Administrator")]
 @inject IAuthorRepository authorRepository
 @inject NavigationManager navManager
 
 <h3>Edit Author</h3>
+<hr />
+<br />
 
-@if (Model == null)
+@if (!isSuccess)
 {
-   <LoadingMessage Message="Loding Author For Edit"/>
+    <ErrorMessage Message="Somewthing Went Wrong With the Operation" />
+}
+@if (int.Parse(Id) < 1 || string.IsNullOrWhiteSpace(Id))
+{
+    <ErrorMessage Message="Invalid Selection. Please Try Again" /> 
+}
+else if (Model == null)
+{
+    <LoadingMessage Message="Loading Author For Edit" />
 }
 else
 {
-    <EditForm Model="Model" OnInvalidSubmit="EditAuthor">
-
-    </EditForm>
+<EditForm Model="Model" OnValidSubmit="EditAuthor">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="form-group">
+        <label for="firstname">First Name</label>
+        <InputText @bind-Value="Model.FirstName" class="form-control" id="firstname" />
+    </div>
+    <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <InputText @bind-Value="Model.LastName" class="form-control" id="lastname" />
+    </div>
+    <div class="form-group">
+        <label for="bio">Biography</label>
+        <InputTextArea @bind-Value="Model.Bio" class="form-control" id="bio" />
+    </div>
+    <button class="btn btn-primary" type="submit">
+        <span class="oi oi-pencil"></span>
+        Submit Changes
+    </button>
+    <button @onclick="BackToList" class="btn btn-outline-secondary">
+        <span class="oi oi-media-skip-backward"></span>
+        Back To List
+    </button>
+</EditForm>
 }
 
-<button @onclick="BackToList" class="btn btn-outline-secondary">
-    <span class="oi oi-media-skip-backward"></span>Back to List
-</button>
 @code {
     [Parameter]
     public string Id { get; set; }
     private Author Model = new Author();
+    private bool isSuccess = true;
     protected override async Task OnInitializedAsync()
     {
         int id = int.Parse(Id);
         Model = await authorRepository.Get(Endpoints.AuthorsEndpoint, id);
     }
 
-    private void EditAuthor()
+    private async Task EditAuthor()
     {
-
+        isSuccess = await authorRepository.Update(Endpoints.AuthorsEndpoint, Model);
+        if (isSuccess)
+        {
+            //_toastService.ShowWarning("Author Updated Successfully", "");
+            BackToList();
+        }
     }
 
     private void BackToList()
